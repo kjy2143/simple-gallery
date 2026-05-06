@@ -1,9 +1,9 @@
-import { usePhotos } from '../hooks/usePhotos'
+import { usePhotosContext } from '../context/PhotosContext'
 import { PhotoGrid } from '../components/PhotoGrid'
 import { Button } from '@/components/ui/button'
 
 export function GalleryPage() {
-  const { photos, loading, error, hasMore, loadMore } = usePhotos()
+  const { photos, loading, error, hasMore, loadMore } = usePhotosContext()
 
   return (
     <div className="min-h-screen bg-gray-50">

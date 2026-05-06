@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import type { Photo } from '../types/photo'
 import { API_BASE, PAGE_SIZE, TOTAL_PHOTOS, normalizePhoto } from '../lib/api'
 
-interface UsePhotosResult {
+export interface UsePhotosResult {
   photos: Photo[]
   loading: boolean
   error: string | null
