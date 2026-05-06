@@ -26,7 +26,12 @@ export function usePhotos(): UsePhotosResult {
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data: Photo[] = await res.json()
       if (signal?.aborted) return
-      setPhotos(prev => [...prev, ...data])
+      const normalized = data.map(photo =>
+        photo.thumbnailUrl.includes('via.placeholder.com')
+          ? { ...photo, thumbnailUrl: `https://picsum.photos/seed/${photo.id}/150` }
+          : photo
+      )
+      setPhotos(prev => [...prev, ...normalized])
       setStart(startIndex + data.length)
     } catch (e) {
       if (e instanceof Error && e.name === 'AbortError') return
