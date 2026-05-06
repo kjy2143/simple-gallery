@@ -105,7 +105,7 @@ describe('usePhotos', () => {
     expect(callCount).toBe(1)
   })
 
-  it('hasMore가 false일 때 loadMore를 호출해도 fetch가 발생하지 않는다', async () => {
+  it('초기 로딩 후 hasMore는 true이고 photos는 4개이다', async () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       json: () => Promise.resolve(makeMockPhotos(0, PAGE_SIZE)),
@@ -114,7 +114,6 @@ describe('usePhotos', () => {
     const { result } = renderHook(() => usePhotos())
     await waitFor(() => expect(result.current.loading).toBe(false))
 
-    // At this point start=4, hasMore=true
     expect(result.current.hasMore).toBe(true)
     expect(result.current.photos).toHaveLength(4)
   })
