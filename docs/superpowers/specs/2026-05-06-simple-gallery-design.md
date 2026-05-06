@@ -20,7 +20,7 @@ JSONPlaceholder API를 이용해 photo card 목록을 보여주는 모바일 웹
 | UI 라이브러리 | shadcn/ui |
 | 스타일 | Tailwind CSS (shadcn 기본 포함) |
 | 배포 | GitHub Pages (`gh-pages` 브랜치) |
-| 언어 | JavaScript (JSX) |
+| 언어 | TypeScript (TSX) |
 
 ---
 
@@ -52,18 +52,20 @@ JSONPlaceholder API를 이용해 photo card 목록을 보여주는 모바일 웹
 ```
 src/
   hooks/
-    usePhotos.js       ← API 호출 + 페이지네이션 state 관리
+    usePhotos.ts       ← API 호출 + 페이지네이션 state 관리
   components/
-    PhotoCard.jsx      ← 카드 1장 (shadcn Card 기반)
-    PhotoGrid.jsx      ← 2열 그리드 레이아웃
-  App.jsx              ← 헤더 + PhotoGrid + 더보기 버튼
-  main.jsx
+    PhotoCard.tsx      ← 카드 1장 (shadcn Card 기반)
+    PhotoGrid.tsx      ← 2열 그리드 레이아웃
+  types/
+    photo.ts           ← Photo 타입 정의
+  App.tsx              ← 헤더 + PhotoGrid + 더보기 버튼
+  main.tsx
   index.css
 ```
 
 ### usePhotos Hook
 
-```js
+```ts
 const { photos, loading, hasMore, loadMore } = usePhotos()
 ```
 
