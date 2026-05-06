@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import type { Photo } from '../types/photo'
 import { PhotoCard } from './PhotoCard'
 
@@ -5,7 +6,7 @@ interface PhotoGridProps {
   photos: Photo[]
 }
 
-export function PhotoGrid({ photos }: PhotoGridProps) {
+export const PhotoGrid = memo(function PhotoGrid({ photos }: PhotoGridProps) {
   return (
     <div className="grid grid-cols-2 gap-3 p-3">
       {photos.map(photo => (
@@ -13,4 +14,4 @@ export function PhotoGrid({ photos }: PhotoGridProps) {
       ))}
     </div>
   )
-}
+})

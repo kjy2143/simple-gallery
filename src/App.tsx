@@ -22,13 +22,13 @@ function App() {
           <PhotoGrid photos={photos} />
         )}
 
-        {error && (
+        {error ? (
           <div className="px-3 py-2">
             <p className="text-sm text-destructive text-center">{error}</p>
           </div>
-        )}
+        ) : null}
 
-        {hasMore && (
+        {hasMore ? (
           <div className="px-3 pb-8">
             <Button
               className="w-full"
@@ -38,7 +38,7 @@ function App() {
               {loading ? '불러오는 중...' : '더 보기'}
             </Button>
           </div>
-        )}
+        ) : null}
       </main>
     </div>
   )
