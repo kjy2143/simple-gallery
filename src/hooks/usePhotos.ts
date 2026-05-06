@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import type { Photo } from '../types/photo'
-import { API_BASE, PAGE_SIZE, TOTAL_PHOTOS } from '../lib/api'
+import { API_BASE, PAGE_SIZE, TOTAL_PHOTOS, normalizePhoto } from '../lib/api'
 
 interface UsePhotosResult {
   photos: Photo[]
@@ -26,12 +26,7 @@ export function usePhotos(): UsePhotosResult {
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data: Photo[] = await res.json()
       if (signal?.aborted) return
-      const normalized = data.map(photo =>
-        photo.thumbnailUrl.includes('via.placeholder.com')
-          ? { ...photo, thumbnailUrl: `https://picsum.photos/seed/${photo.id}/150` }
-          : photo
-      )
-      setPhotos(prev => [...prev, ...normalized])
+      setPhotos(prev => [...prev, ...data.map(normalizePhoto)])
       setStart(startIndex + data.length)
     } catch (e) {
       if (e instanceof Error && e.name === 'AbortError') return
