@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import { PhotoCard } from './PhotoCard'
-import { Photo } from '../types/photo'
+import type { Photo } from '../types/photo'
 
 const mockPhoto: Photo = {
   albumId: 3,
