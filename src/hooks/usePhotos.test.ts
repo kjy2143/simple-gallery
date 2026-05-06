@@ -30,7 +30,8 @@ describe('usePhotos', () => {
 
     expect(result.current.photos).toHaveLength(4)
     expect(fetch).toHaveBeenCalledWith(
-      'https://jsonplaceholder.typicode.com/photos?_start=0&_limit=4'
+      'https://jsonplaceholder.typicode.com/photos?_start=0&_limit=4',
+      expect.objectContaining({ signal: expect.any(AbortSignal) })
     )
   })
 
@@ -47,7 +48,8 @@ describe('usePhotos', () => {
     await waitFor(() => expect(result.current.photos).toHaveLength(8))
 
     expect(fetch).toHaveBeenCalledWith(
-      'https://jsonplaceholder.typicode.com/photos?_start=4&_limit=4'
+      'https://jsonplaceholder.typicode.com/photos?_start=4&_limit=4',
+      expect.objectContaining({ signal: undefined })
     )
   })
 
@@ -83,5 +85,37 @@ describe('usePhotos', () => {
     await waitFor(() => expect(result.current.loading).toBe(false))
     expect(result.current.error).toBe('HTTP 500')
     expect(result.current.photos).toHaveLength(0)
+  })
+
+  it('로딩 중에 loadMore를 호출해도 중복 fetch가 발생하지 않는다', async () => {
+    let callCount = 0
+    global.fetch = vi.fn().mockImplementation(() => {
+      callCount++
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(makeMockPhotos(0, PAGE_SIZE)),
+      } as unknown as Response)
+    })
+
+    const { result } = renderHook(() => usePhotos())
+    // loadMore called during initial fetch — should be no-op
+    act(() => result.current.loadMore())
+    act(() => result.current.loadMore())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    expect(callCount).toBe(1)
+  })
+
+  it('hasMore가 false일 때 loadMore를 호출해도 fetch가 발생하지 않는다', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(makeMockPhotos(0, PAGE_SIZE)),
+    } as unknown as Response)
+
+    const { result } = renderHook(() => usePhotos())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+
+    // At this point start=4, hasMore=true
+    expect(result.current.hasMore).toBe(true)
+    expect(result.current.photos).toHaveLength(4)
   })
 })
