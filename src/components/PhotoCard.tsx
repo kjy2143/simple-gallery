@@ -13,6 +13,9 @@ export function PhotoCard({ photo }: PhotoCardProps) {
         src={photo.thumbnailUrl}
         alt={photo.title}
         className="w-full aspect-square object-cover"
+        onError={(e) => {
+          e.currentTarget.src = `https://picsum.photos/seed/${photo.id}/150`
+        }}
       />
       <CardContent className="p-2">
         <div className="flex gap-1 mb-1 flex-wrap">
