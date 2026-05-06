@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Photo } from '../types/photo'
+import type { Photo } from '../types/photo'
 
 interface PhotoCardProps {
   photo: Photo

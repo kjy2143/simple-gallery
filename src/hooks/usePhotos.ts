@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { Photo } from '../types/photo'
+import type { Photo } from '../types/photo'
 import { API_BASE, PAGE_SIZE, TOTAL_PHOTOS } from '../lib/api'
 
 interface UsePhotosResult {

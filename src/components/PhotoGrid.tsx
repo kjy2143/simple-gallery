@@ -1,4 +1,4 @@
-import { Photo } from '../types/photo'
+import type { Photo } from '../types/photo'
 import { PhotoCard } from './PhotoCard'
 
 interface PhotoGridProps {
