@@ -18,7 +18,6 @@ export function usePhotos(): UsePhotosResult {
   const fetchingRef = useRef(false)
 
   const fetchPhotos = useCallback(async (startIndex: number, signal?: AbortSignal) => {
-    if (fetchingRef.current) return
     fetchingRef.current = true
     setLoading(true)
     setError(null)
@@ -26,6 +25,7 @@ export function usePhotos(): UsePhotosResult {
       const res = await fetch(`${API_BASE}?_start=${startIndex}&_limit=${PAGE_SIZE}`, { signal })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data: Photo[] = await res.json()
+      if (signal?.aborted) return
       setPhotos(prev => [...prev, ...data])
       setStart(startIndex + data.length)
     } catch (e) {
@@ -39,6 +39,7 @@ export function usePhotos(): UsePhotosResult {
 
   useEffect(() => {
     const controller = new AbortController()
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchPhotos(0, controller.signal)
     return () => controller.abort()
   }, [fetchPhotos])

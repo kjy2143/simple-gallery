@@ -117,4 +117,16 @@ describe('usePhotos', () => {
     expect(result.current.hasMore).toBe(true)
     expect(result.current.photos).toHaveLength(4)
   })
+
+  it('StrictMode에서 초기 사진을 정상적으로 불러온다', async () => {
+    const { configure } = await import('@testing-library/react')
+    configure({ reactStrictMode: true })
+    try {
+      const { result } = renderHook(() => usePhotos())
+      await waitFor(() => expect(result.current.loading).toBe(false))
+      expect(result.current.photos).toHaveLength(4)
+    } finally {
+      configure({ reactStrictMode: false })
+    }
+  })
 })
